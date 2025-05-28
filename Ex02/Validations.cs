@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Ex02
 {
+    //change name of this class 
     internal class Validations
     {
         public Validations()
@@ -19,35 +20,48 @@ namespace Ex02
             bool isNumber = int.TryParse(i_UserInputNumberOfGuesses, out int numberAsInt);
             return isNumber && numberAsInt>=4 && numberAsInt<=10;
         }
+        //todo: change this function name 
         public string ValidateUserGuess(string i_UserGuess)
         {
-            int[] chars = new int[8];
-            //check length 
-            if (i_UserGuess.Length != 4)
+            string returnValue = string.Empty;
+            int[] chars = new int[26];
+            if (i_UserGuess == "Q")
             {
-                return "Your guess must be of length 4";
+                returnValue = string.Empty;
             }
-            foreach (char c in i_UserGuess)
+            else
             {
-                //check that all letters are from A-H 
-                if (!(c >= 'A' && c <= 'H'))
+                //check length 
+                if (i_UserGuess.Length != 4)
                 {
-                    return "You entered a letter not between A and H";
+                    returnValue = "Your guess must be of length 4";
                 }
-                //check that there are no spaces
-                if (char.IsWhiteSpace(c))
+                foreach (char c in i_UserGuess)
                 {
-                    return "You cannot enter spaces";
-                }
-                chars[(int)c - (int)'A']++;
-                //check if there are duplicates 
-                if (chars[(int)c - (int)'A'] > 1)
-                {
-                    return $"You typed the letter {c} more then once";
-                }
-            }
-            return string.Empty;
-        }
+                    //check that there are no spaces
+                    if (char.IsWhiteSpace(c))
+                    {
+                        returnValue = "You cannot enter spaces";
+                        break;
+                    }
 
+                    //check that all letters are from A-H 
+                    if (!(c >= 'A' && c <= 'H'))
+                    {
+                        returnValue = "You entered a letter not between A and H";
+                        break;
+                    }
+      
+                    chars[(int)c - (int)'A']++;
+                    //check if there are duplicates 
+                    if (chars[(int)c - (int)'A'] > 1)
+                    {
+                        returnValue = $"You typed the letter {c} more then once";
+                        break;
+                    }
+                }
+            }
+            return returnValue;
+        }
     }
 }

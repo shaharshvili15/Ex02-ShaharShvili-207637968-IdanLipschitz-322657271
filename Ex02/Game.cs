@@ -1,105 +1,111 @@
 ﻿using System;
 using System.Dynamic;
 using System.Security.AccessControl;
-
+using Ex02.ConsoleUtils;
 namespace Ex02
 {
     class Game
     {
-        public LogicGame LogicGame { get; set; }
+        private readonly Logic m_logic;
+        private readonly Board m_board;
+        private readonly State m_State;
         private string m_LastGuess;
+        private readonly Validations m_Validations;
+
+
         public Game()
         {
-            Validations gameValidation = new Validations();
+            m_Validations = new Validations();
 
-            //here we get the number of guesses of the game 
-            Console.WriteLine("Please enter the number of requiered quess for the game this number needs to be between 4 and 10");
+            //here we get the number of guesses of the game
+            int numberOfGuesses = GetUserInputNumberOfGuessesInGame();
+
+            //create a new game 
+            m_logic = new Logic(numberOfGuesses);
+            m_State = new State(numberOfGuesses, m_logic.GeneratedString);
+            m_board = new Board(numberOfGuesses,m_State);
+            
+            
+            HandleGame();
+        }
+       
+        private void HandleGame()
+        {
+            while (!(m_State.IsGameOver()))
+            {
+
+                GetAGuessFromTheBoard();
+                if (m_LastGuess == "Q")
+                {
+                    break;
+                }
+
+                Screen.Clear();
+
+                string result = m_logic.CheckXorVAccordingToUserInput(m_LastGuess);
+                m_board.AddGuess(m_LastGuess, result);
+                m_board.DisplayBoard();
+                if (m_State.IsWinner(m_LastGuess))
+                {
+                    m_board.ShowWinningMessage();
+                    m_board.RequestForNewGame();
+                    break;
+                
+                }
+                if (m_State.IsGameOver())
+                {
+                    m_board.ShowLossingMessage();
+                    m_board.RequestForNewGame();
+                    break;
+                }
+            }
+            NewGame();
+
+        }
+
+        private void NewGame()
+        {
+            string input = Console.ReadLine();
+            if (input.ToUpper() == "Y")
+            {
+                Screen.Clear();
+                new Game();
+            }
+        }
+
+
+        private void GetAGuessFromTheBoard()
+        {
+            while (true)
+            {
+                m_board.RequestGuess();
+                m_LastGuess = Console.ReadLine();
+                m_LastGuess = m_LastGuess.ToUpper();
+                string userGuessValidation = m_Validations.ValidateUserGuess(m_LastGuess);
+                if (userGuessValidation == string.Empty)
+                {
+                    break;
+                }
+                m_board.DisplayError(userGuessValidation);
+            }
+        }
+
+        private int GetUserInputNumberOfGuessesInGame()
+        {
+            Console.WriteLine("Please enter the number of requiered guesses for your gamee (4-10)");
             string numberOfGuessAsAString = Console.ReadLine();
             while (true)
             {
-                if (gameValidation.ValidateNumberOfGuesses(numberOfGuessAsAString))
+                if (m_Validations.ValidateNumberOfGuesses(numberOfGuessAsAString))
                 {
                     break;
                 }
                 Console.WriteLine("Please enter a valid number of guesses (4-10)");
                 numberOfGuessAsAString = Console.ReadLine();
             }
-
-            //create a new game 
-            BoardGame boardGame = new BoardGame(int.Parse(numberOfGuessAsAString));
-            LogicGame logicGame = new LogicGame(int.Parse(numberOfGuessAsAString));
-
-
-
-            //ask the user for guesses and handle the game 
-            while (true)
-            {
-                //if we won display won message 
-                //if we lost display lost message 
-                while (true)
-                {
-                    boardGame.RequestGuess();
-                    m_LastGuess = Console.ReadLine();
-                    m_LastGuess = m_LastGuess.ToUpper();
-                    string userGuessValidation = gameValidation.ValidateUserGuess(m_LastGuess);
-                    if (userGuessValidation == string.Empty)
-                    {
-                        break;
-                    }
-                    boardGame.DisplayError(userGuessValidation);
-                }
-                logicGame.CurrentNumberOfGuesses += 1;
-                string VX = logicGame.CheckXorVAccordingToUserInput(m_LastGuess);
-                boardGame.AddGuess(m_LastGuess, VX);
-                //check if user enter q 
-                //if we lost 
-                //if we won 
-                boardGame.DisplayBoard();
-                if (logicGame.GuessedCorrectly(m_LastGuess))
-                {
-                    boardGame.ShowWinningMessage();
-                    break;
-                }
-                if (logicGame.ExceededNumberOfGuesses())
-                {
-                    boardGame.ShowLossingMessage();
-                    break;
-                }
-            }
-            boardGame.RequestForNewGame();
-
-            
-            
-            
-            
-            
-            //need to get here y or n 
-
-
-            /// and we tell the board game to get a guess from the user 
-            /// here in this class we get the guess and check if it is valid if not try again 
-            /// once we have a valid guess we send it to the logic game and the logic game returns the result 
-            /// we send the board the guess and the result 
-
-
-
-            //enter num,ber of guess 
-            //new board(numberOfGuesses)
-            //this will draw a board with number of guess as the rows 
-            //new logic with number of guesses 
-
-
-
-
-            //ask the user using the board class what is the number of guess he wants (4-10)
-            //send the logic game the number the user entered.
-            //LogicGame = new LogicGame();
-            //Console.WriteLine($"This is the word that was generated {LogicGame.GeneratedString}");
-
-            Console.WriteLine("Press any key to continue");
-            Console.ReadLine();
+            return int.Parse(numberOfGuessAsAString);
         }
-        
-        
+
+
     }
 }

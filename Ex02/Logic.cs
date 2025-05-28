@@ -6,55 +6,50 @@ using System.Threading.Tasks;
 
 namespace Ex02
 {
-    internal class LogicGame
+    internal class Logic
     {
-        //TODO: GENERATE A 4 LETTERS RANDOM SEQUNCE BETWEEN A-H WITH REPETITION 
-        //TODO: GET A SEQUNCE OF LETTERS FROM THE USER AND RETURN THE V AND X ACCORDING TO THE SEQUNCE 
-
-        public string GeneratedString { get; set; } // need to check if this is the data member 
-        public int MaxNumberOfGuessesInGame { get; set; }
+        public string GeneratedString { get; set; }
+        private readonly int m_MaxNumberOfGuessesInGame;
         public int CurrentNumberOfGuesses { get; set; }
-        public LogicGame(int i_MaxNumberOfGuesses) 
+
+        private const int k_NumberOfLettersInSequence = 4;
+        public Logic(int i_MaxNumberOfGuesses) 
         {
-            MaxNumberOfGuessesInGame = i_MaxNumberOfGuesses;
+            m_MaxNumberOfGuessesInGame = i_MaxNumberOfGuesses;
             GeneratedString = generateRandomString();
         }
-        //public getUserGuess(string guess)
-        // number
-        //toupper 
-        //note = validateUserGuess 
-        //if not return the string
-        //checkXorVAccordingToUserInput 
-        //
+        
 
         
         private string generateRandomString()
         {
-            string word = "";
+            HashSet<char> chars = new HashSet<char>();
+            StringBuilder word = new StringBuilder();
             Random rnd = new Random();
             char nextLetter = (char)rnd.Next('A', 'H' + 1);
-            word += nextLetter;
-            while (word.Length < 4)
+            word.Append(nextLetter);
+            chars.Add(nextLetter);
+            while (word.Length < k_NumberOfLettersInSequence)
             {
                 nextLetter = (char)rnd.Next('A', 'H' + 1);
-                if (word.Contains(nextLetter))
+                if (chars.Contains(nextLetter))
                 {
                     continue;
                 }
-                word += nextLetter;
+                word.Append(nextLetter);
+                chars.Add(nextLetter);
             }
             ////need to remove this 
             Console.WriteLine($"this is the word: {word}");
-            return word;
+            return word.ToString();
         }
-        
         public string CheckXorVAccordingToUserInput(string i_UserGuess)
         {
             StringBuilder sequenceOfV = new StringBuilder();
             StringBuilder sequenceOfX = new StringBuilder();
             int pointerOfTheGeneratedString = 0;
             int pointerOfTheUserInput = 0;
-            while (pointerOfTheUserInput < 4)
+            while (pointerOfTheUserInput < k_NumberOfLettersInSequence)
             {
 
                 char currentCharInGeneratedString = GeneratedString[pointerOfTheGeneratedString];
@@ -78,7 +73,7 @@ namespace Ex02
                 else
                 {
                     pointerOfTheGeneratedString++;
-                    if(pointerOfTheGeneratedString > 3)
+                    if(pointerOfTheGeneratedString > k_NumberOfLettersInSequence-1)
                     {
 
                         pointerOfTheUserInput++;
@@ -89,17 +84,9 @@ namespace Ex02
 
             return sequenceOfV.Append(sequenceOfX).ToString();
         }
-        public bool GuessedCorrectly(string i_UserGuess)
-        {
-            return i_UserGuess == GeneratedString;
-        }
+        
 
-        public bool ExceededNumberOfGuesses()
-        {
-            return CurrentNumberOfGuesses > MaxNumberOfGuessesInGame;
-        }
 
-        //function  that checks if we passed number of guess 
 
     }
 }
