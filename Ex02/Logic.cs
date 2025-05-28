@@ -9,18 +9,12 @@ namespace Ex02
     internal class Logic
     {
         public string GeneratedString { get; set; }
-        private readonly int m_MaxNumberOfGuessesInGame;
-        public int CurrentNumberOfGuesses { get; set; }
-
         private const int k_NumberOfLettersInSequence = 4;
-        public Logic(int i_MaxNumberOfGuesses) 
+        public Logic() 
         {
-            m_MaxNumberOfGuessesInGame = i_MaxNumberOfGuesses;
             GeneratedString = generateRandomString();
         }
-        
 
-        
         private string generateRandomString()
         {
             HashSet<char> chars = new HashSet<char>();
@@ -36,11 +30,11 @@ namespace Ex02
                 {
                     continue;
                 }
+
                 word.Append(nextLetter);
                 chars.Add(nextLetter);
             }
-            ////need to remove this 
-            Console.WriteLine($"this is the word: {word}");
+
             return word.ToString();
         }
         public string CheckXorVAccordingToUserInput(string i_UserGuess)
@@ -84,9 +78,5 @@ namespace Ex02
 
             return sequenceOfV.Append(sequenceOfX).ToString();
         }
-        
-
-
-
     }
 }

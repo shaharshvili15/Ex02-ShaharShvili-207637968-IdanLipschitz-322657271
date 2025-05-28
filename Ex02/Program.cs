@@ -11,7 +11,7 @@ namespace Ex02
 
         public static void Main()
         {
-            Game g = new Game();
+            Game game = new Game();
 
         }
     }

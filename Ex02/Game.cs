@@ -6,64 +6,56 @@ namespace Ex02
 {
     class Game
     {
-        private readonly Logic m_logic;
-        private readonly Board m_board;
-        private readonly State m_State;
+        private readonly Logic r_Logic;
+        private readonly Board r_Board;
+        private readonly State r_State;
         private string m_LastGuess;
-        private readonly Validations m_Validations;
-
+        private readonly Validations r_Validations;
 
         public Game()
         {
-            m_Validations = new Validations();
-
-            //here we get the number of guesses of the game
-            int numberOfGuesses = GetUserInputNumberOfGuessesInGame();
-
-            //create a new game 
-            m_logic = new Logic(numberOfGuesses);
-            m_State = new State(numberOfGuesses, m_logic.GeneratedString);
-            m_board = new Board(numberOfGuesses,m_State);
-            
-            
-            HandleGame();
+            r_Validations = new Validations();
+            int numberOfGuesses = getUserInputNumberOfGuessesInGame();
+            r_Logic = new Logic();
+            r_State = new State(numberOfGuesses, r_Logic.GeneratedString);
+            r_Board = new Board(numberOfGuesses,r_State);
+            handleGame();
         }
        
-        private void HandleGame()
+        private void handleGame()
         {
-            while (!(m_State.IsGameOver()))
+            while (!r_State.IsGameOver())
             {
-
-                GetAGuessFromTheBoard();
+                getAGuessFromTheBoard();
                 if (m_LastGuess == "Q")
                 {
                     break;
                 }
 
                 Screen.Clear();
-
-                string result = m_logic.CheckXorVAccordingToUserInput(m_LastGuess);
-                m_board.AddGuess(m_LastGuess, result);
-                m_board.DisplayBoard();
-                if (m_State.IsWinner(m_LastGuess))
+                string result = r_Logic.CheckXorVAccordingToUserInput(m_LastGuess);
+                r_State.AddGuess(m_LastGuess, result);
+                r_Board.DisplayBoard();
+                if (r_State.IsWinner(m_LastGuess))
                 {
-                    m_board.ShowWinningMessage();
-                    m_board.RequestForNewGame();
-                    break;
-                
-                }
-                if (m_State.IsGameOver())
-                {
-                    m_board.ShowLossingMessage();
-                    m_board.RequestForNewGame();
+                    r_Board.ShowWinningMessage();
+                    r_Board.RequestForNewGame();
                     break;
                 }
             }
-            NewGame();
-
+            if (r_State.IsGameOver())
+            {
+                r_Board.ShowLossingMessage();
+                r_Board.RequestForNewGame();
+            }
+            if (r_State.IsWinner(m_LastGuess) || r_State.IsGameOver())
+            {
+                newGame();
+            }
+            
         }
 
-        private void NewGame()
+        private void newGame()
         {
             string input = Console.ReadLine();
             if (input.ToUpper() == "Y")
@@ -74,35 +66,38 @@ namespace Ex02
         }
 
 
-        private void GetAGuessFromTheBoard()
+        private void getAGuessFromTheBoard()
         {
             while (true)
             {
-                m_board.RequestGuess();
+                r_Board.RequestGuess();
                 m_LastGuess = Console.ReadLine();
                 m_LastGuess = m_LastGuess.ToUpper();
-                string userGuessValidation = m_Validations.ValidateUserGuess(m_LastGuess);
+                string userGuessValidation = r_Validations.ValidateUserGuess(m_LastGuess);
                 if (userGuessValidation == string.Empty)
                 {
                     break;
                 }
-                m_board.DisplayError(userGuessValidation);
+
+                r_Board.DisplayError(userGuessValidation);
             }
         }
 
-        private int GetUserInputNumberOfGuessesInGame()
+        private int getUserInputNumberOfGuessesInGame()
         {
             Console.WriteLine("Please enter the number of requiered guesses for your gamee (4-10)");
             string numberOfGuessAsAString = Console.ReadLine();
             while (true)
             {
-                if (m_Validations.ValidateNumberOfGuesses(numberOfGuessAsAString))
+                if (r_Validations.ValidateNumberOfGuesses(numberOfGuessAsAString))
                 {
                     break;
                 }
+
                 Console.WriteLine("Please enter a valid number of guesses (4-10)");
                 numberOfGuessAsAString = Console.ReadLine();
             }
+
             return int.Parse(numberOfGuessAsAString);
         }
 

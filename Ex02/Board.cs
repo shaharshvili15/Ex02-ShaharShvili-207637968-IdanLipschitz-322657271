@@ -8,12 +8,12 @@ namespace Ex02
 {
     internal class Board
     {
-        public int MaxNumberOfGuessesInGame { get; set; }
-        private State m_GameState;
-        public Board(int i_numberOfGuesses,State i_GameState)
+        private readonly int r_MaxNumberOfGuessesInGame;
+        private readonly State r_GameState;
+        public Board(int i_NumberOfGuesses,State i_GameState)
         {
-            MaxNumberOfGuessesInGame = i_numberOfGuesses;
-            m_GameState = i_GameState;
+            r_MaxNumberOfGuessesInGame = i_NumberOfGuesses;
+            r_GameState = i_GameState;
             DisplayBoard();
         }
         public void RequestGuess()
@@ -22,7 +22,7 @@ namespace Ex02
         }
         public void ShowWinningMessage()
         {
-            Console.WriteLine($"You guessed after {m_GameState.m_UserGuesses.Count} steps!");
+            Console.WriteLine($"You guessed after {r_GameState.m_UserGuesses.Count} steps!");
         }
         public void ShowLossingMessage() 
         {
@@ -38,20 +38,18 @@ namespace Ex02
         }
         public void DisplayBoard()
         {
-            //maybe need to clear here not sure 
             Console.WriteLine("Current board status");
             Console.WriteLine("|Pins:   |Result: |");
             Console.WriteLine("|=================|");
             Console.WriteLine("| # # # #|        |");
             Console.WriteLine("|=================|");
-            for (int i= 0; i< MaxNumberOfGuessesInGame; i++)
+            for (int i = 0; i < r_MaxNumberOfGuessesInGame; i++)
             {
-                if (i < m_GameState.m_UserGuesses.Count)
+                if (i < r_GameState.m_UserGuesses.Count)
                 {
-                    string currentGuess = string.Join(" ", m_GameState.m_UserGuesses[i].ToCharArray()).PadRight(7);
-                    string currentResult = string.Join(" ", m_GameState.m_Results[i].ToCharArray()).PadRight(7);
+                    string currentGuess = string.Join(" ", r_GameState.m_UserGuesses[i].ToCharArray()).PadRight(7);
+                    string currentResult = string.Join(" ", r_GameState.m_Results[i].ToCharArray()).PadRight(7);
                     Console.WriteLine($"|{currentGuess} |{currentResult} |");
-                    //Console.WriteLine($"|{m_userGuesses[i]}|{m_results[i]}|");
                     Console.WriteLine("|=================|");
                 }
                 else
@@ -60,13 +58,6 @@ namespace Ex02
                     Console.WriteLine("|=================|");
                 }
             }
-            //line (you won / you lost / new guess) 
         }
-        public void AddGuess(string i_UserGuess, string i_GuessResult)
-        {
-            m_GameState.m_UserGuesses.Add(i_UserGuess);
-            m_GameState.m_Results.Add(i_GuessResult);
-        }
-
     }
 }
