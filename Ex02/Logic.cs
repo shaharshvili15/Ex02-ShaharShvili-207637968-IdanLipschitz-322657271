@@ -43,7 +43,7 @@ namespace Ex02
             StringBuilder sequenceOfX = new StringBuilder();
             int pointerOfTheGeneratedString = 0;
             int pointerOfTheUserInput = 0;
-            while (pointerOfTheUserInput < k_NumberOfLettersInSequence)
+            while (pointerOfTheUserInput < i_UserGuess.Length)
             {
 
                 char currentCharInGeneratedString = GeneratedString[pointerOfTheGeneratedString];

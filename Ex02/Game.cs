@@ -16,9 +16,10 @@ namespace Ex02
         {
             r_Validations = new Validations();
             int numberOfGuesses = getUserInputNumberOfGuessesInGame();
+
             r_Logic = new Logic();
             r_State = new State(numberOfGuesses, r_Logic.GeneratedString);
-            r_Board = new Board(numberOfGuesses,r_State);
+            r_Board = new Board(r_State);
             handleGame();
         }
        
@@ -32,7 +33,6 @@ namespace Ex02
                     break;
                 }
 
-                Screen.Clear();
                 string result = r_Logic.CheckXorVAccordingToUserInput(m_LastGuess);
                 r_State.AddGuess(m_LastGuess, result);
                 r_Board.DisplayBoard();
@@ -43,7 +43,8 @@ namespace Ex02
                     break;
                 }
             }
-            if (r_State.IsGameOver())
+
+            if (r_State.IsGameOver() && !r_State.IsWinner(m_LastGuess))
             {
                 r_Board.ShowLossingMessage();
                 r_Board.RequestForNewGame();
@@ -52,7 +53,6 @@ namespace Ex02
             {
                 newGame();
             }
-            
         }
 
         private void newGame()
@@ -74,6 +74,7 @@ namespace Ex02
                 m_LastGuess = Console.ReadLine();
                 m_LastGuess = m_LastGuess.ToUpper();
                 string userGuessValidation = r_Validations.ValidateUserGuess(m_LastGuess);
+
                 if (userGuessValidation == string.Empty)
                 {
                     break;
