@@ -25,7 +25,6 @@ namespace Ex02
 
         public bool IsGameOver()
         {
-
             return CurrentNumberOfGuesses >= MaxNumberOfGuesses;
         }
         private List<eGameLetter> generateRandomString()
@@ -98,6 +97,7 @@ namespace Ex02
                 }
                 seenLetters.Add(currentLetter);
             }
+
             return message;
         }
 

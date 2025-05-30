@@ -88,7 +88,8 @@ namespace Ex02
                 DisplayError(userGuessValidation);
             }
             m_UserGuesses.Add(userGuess);
-            r_GameLogic.CurrentNumberOfGuesses++;
+            r_GameLogic.CurrentNumberOfGuesses++; 
+
             return convertUserGuessStringToEnumList(userGuess);
         }
         public void ShowWinningMessage()
@@ -143,6 +144,7 @@ namespace Ex02
             {
                 GuessAsList.Add(r_LetterDictionary[c]);
             }
+
             return GuessAsList;
         }
         private string convertResultFromListEnumToString(List<eFeedback> i_Feedback)
@@ -152,6 +154,7 @@ namespace Ex02
             {
                 sb.Append(r_FeedbackDictionary[item]);
             }
+
             return sb.ToString();
         }
         public void AddResultToList(List<eFeedback> i_Feedback)
