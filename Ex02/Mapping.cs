@@ -6,13 +6,7 @@ using System.Threading.Tasks;
 
 namespace Ex02
 {
-    internal class Program
+    internal class Mapping
     {
-
-        public static void Main()
-        {
-            GameManager game = new GameManager();
-
-        }
     }
 }

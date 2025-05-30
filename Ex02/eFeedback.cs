@@ -6,13 +6,9 @@ using System.Threading.Tasks;
 
 namespace Ex02
 {
-    internal class Program
+    enum eFeedback
     {
-
-        public static void Main()
-        {
-            GameManager game = new GameManager();
-
-        }
+        Bull,
+        Cow
     }
 }

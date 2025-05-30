@@ -6,13 +6,8 @@ using System.Threading.Tasks;
 
 namespace Ex02
 {
-    internal class Program
+    enum eGameLetter
     {
-
-        public static void Main()
-        {
-            GameManager game = new GameManager();
-
-        }
+        A, B, C, D, E, F, G, H, Q    
     }
 }
