@@ -10,11 +10,11 @@ namespace Ex02
     internal class GameBoard
     {
         private readonly GameLogic r_GameLogic;
-        public List<string> m_UserGuesses { get; }
-        public List<string> m_Results { get; }
+        private List<string> m_UserGuesses;
+        private List<string> m_Results;
 
         private readonly Dictionary<char, eGameLetter> r_LetterDictionary = new Dictionary<char, eGameLetter>()
-        { { 'A',eGameLetter.A},
+        {{'A',eGameLetter.A},
         { 'B',eGameLetter.B},
         { 'C',eGameLetter.C},
         { 'D',eGameLetter.D},

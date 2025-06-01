@@ -8,14 +8,23 @@ namespace Ex02
 {
     class GameManager
     {
-        private readonly GameLogic r_GameLogic;
-        private readonly GameBoard r_GameBoard;
+        private GameLogic r_GameLogic;
+        private GameBoard r_GameBoard;
         private List<eGameLetter> m_LastGuess;
 
         public GameManager()
         {
             int numberOfGuesses = getUserInputNumberOfGuessesInGame();
 
+            r_GameLogic = new GameLogic(numberOfGuesses);
+            r_GameBoard = new GameBoard(r_GameLogic);
+            m_LastGuess = new List<eGameLetter>();
+            handleGame();
+        }
+
+        public void PlayAgain()
+        {
+            int numberOfGuesses = getUserInputNumberOfGuessesInGame();
             r_GameLogic = new GameLogic(numberOfGuesses);
             r_GameBoard = new GameBoard(r_GameLogic);
             m_LastGuess = new List<eGameLetter>();
@@ -61,7 +70,7 @@ namespace Ex02
             if (input.ToUpper() == "Y")
             {
                 Screen.Clear();
-                new GameManager();
+                PlayAgain();
             }
         }
 
